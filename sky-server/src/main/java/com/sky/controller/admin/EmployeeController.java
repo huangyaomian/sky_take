@@ -133,7 +133,7 @@ public class EmployeeController {
      * @return
      */
     @PutMapping()
-    @ApiOperation("通过id获取员工信息")
+    @ApiOperation("编辑员工信息")
     public Result update(@RequestBody EmployeeDTO employeeDTO) {
         employeeService.update(employeeDTO);
         return Result.success();
