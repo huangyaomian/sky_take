@@ -16,6 +16,7 @@ import com.sky.vo.EmployeeLoginVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -98,7 +99,19 @@ public class EmployeeController {
     @GetMapping("/page")
     @ApiOperation("员工分页查询")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO){
-        return null;
+        PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
     }
 
+    /**
+     * 启用和禁用员工
+     *
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("启用和禁用员工")
+    public Result startAndStop(@PathVariable Integer status, Long id) {
+        employeeService.startAndStop(status,id);
+        return Result.success();
+    }
 }
