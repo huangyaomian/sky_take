@@ -34,8 +34,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工登录
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO employeeLoginDTO
+     * @return Employee
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -77,17 +77,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         BeanUtils.copyProperties(employeeDTO, employee);
         employee.setStatus(StatusConstant.ENABLE);
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.insert(employee);
     }
 
     /**
      * 员工分页查询
      *
-     * @param employeePageQueryDTO
+     * @param employeePageQueryDTO employeePageQueryDTO
      * @return PageResult
      */
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
@@ -101,8 +101,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 启用和禁用员工账号
      *
-     * @param status
-     * @param id
+     * @param status status
+     * @param id id
      */
     public void startAndStop(Integer status, Long id) {
         Employee employee = Employee.builder()
@@ -112,14 +112,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.update(employee);
     }
 
-    @Override
     public Employee getEmployeeById(Long id) {
         Employee employee = employeeMapper.getEmployeeById(id);
         employee.setPassword("*****");
         return employee;
     }
 
-    @Override
     public void update(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
