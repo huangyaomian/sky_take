@@ -96,4 +96,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void cleanShoppingCart() {
         shoppingCartMapper.deleteByUserId(BaseContext.getCurrentId());
     }
+
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        if (list == null || list.isEmpty()) {
+            throw new DeletionNotAllowedException(MessageConstant.UNKNOWN_ERROR);
+        }
+        shoppingCart = list.get(0);
+        Integer number = shoppingCart.getNumber();
+        if (number == 1) {
+            shoppingCartMapper.deleteById(shoppingCart.getId());
+        } else {
+            shoppingCart.setNumber(shoppingCart.getNumber() - 1);
+            shoppingCartMapper.updateNumberById(shoppingCart);
+        }
+    }
 }
