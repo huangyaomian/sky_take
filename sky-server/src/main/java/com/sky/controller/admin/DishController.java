@@ -102,5 +102,20 @@ public class DishController {
         return Result.success(list);
     }
 
+    /**
+     * 起售停售
+     *
+     * @param status
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("起售停售")
+    @CacheEvict(cacheNames = "categoryCache", allEntries = true)
+    public Result startOrStop(@PathVariable Integer status, Long id) {
+        dishService.startOrStop(status, id);
+        return Result.success();
+    }
+
 
 }
